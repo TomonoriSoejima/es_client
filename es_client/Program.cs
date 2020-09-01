@@ -83,7 +83,7 @@ namespace es_client
                 Level = LogLevel.Info
             };
 
-            ConditionContainer cd = new AlwaysCondition();
+            ConditionContainer condition = new AlwaysCondition();
 
             var my_http = new HttpInputRequest
             {
@@ -93,7 +93,7 @@ namespace es_client
                 Method = HttpInputMethod.Get
             };
 
-            var input_container = new HttpInput
+            var input = new HttpInput
             {
                 Request = my_http
             };
@@ -105,20 +105,19 @@ namespace es_client
             int[] intNumbers = new int[] { 30 };
             hourly.Minute = intNumbers;
 
-            var schedule = new ScheduleContainer
+            var trigger = new ScheduleContainer
             {
                 Hourly = hourly
             };
 
-        
 
             var id = "status-check";
             PutWatchRequest watchRequest = new PutWatchRequest(id)
             {
                 Actions = action,
-                Condition = cd,
-                Input = input_container,
-                Trigger = schedule
+                Condition = condition,
+                Input = input,
+                Trigger = trigger
             };
 
 
