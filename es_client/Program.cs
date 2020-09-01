@@ -17,7 +17,7 @@ namespace es_client
 
             var client = new ElasticClient(settings);
 
-            watcher_sample(client);
+            watcher_sample2(client);
             //Do_it(client);
             BulkAll(client);
             //Task task = AsyncMethod(client);
@@ -28,9 +28,7 @@ namespace es_client
         async static Task<string> AsyncMethod(ElasticClient client)
         {
 
-            //26745236
-            //2147483519
-            //432344637
+     
             int max = 2147483519;
             for (int i = max - 1; i >= 0; i--)
             {
@@ -59,7 +57,7 @@ namespace es_client
 
         public static void watcher_sample(ElasticClient client)
         {
-            var watcher_id = "status-test2";
+            var watcher_id = "status-check";
 
     
             ExecuteWatchRequest request = new ExecuteWatchRequest(watcher_id);
@@ -72,6 +70,64 @@ namespace es_client
             Console.WriteLine(response.WatchRecord.Result.Actions);
             
     
+        }
+
+        public static void watcher_sample2(ElasticClient client)
+        {
+
+
+            // action
+            var action = new LoggingAction("mylog")
+            {
+                Text = "some node is down",
+                Level = LogLevel.Info
+            };
+
+
+            var my_http = new HttpInputRequest
+            {
+                Host = "localhost",
+                Port = 9200,
+                Path = "_cat/nodes",
+                Method = HttpInputMethod.Get
+            };
+
+            var input_container = new HttpInput
+            {
+                Request = my_http
+            };
+
+
+        
+            var schedule = new HourlySchedule();
+
+            int[] intNumbers = new int[] { 30 };
+            schedule.Minute = intNumbers;
+
+            var schedule1 = new ScheduleContainer
+            {
+                Hourly = schedule
+            };
+
+            ConditionContainer cd = new AlwaysCondition();
+
+            var id = "akito";
+            PutWatchRequest watchRequest = new PutWatchRequest(id);
+            watchRequest.Actions = action;
+            watchRequest.Condition = cd;
+            watchRequest.Input = input_container;
+            watchRequest.Trigger = schedule1;
+
+
+            PutWatchResponse response = client.Watcher.Put(watchRequest);
+
+            //ExecuteWatchResponse response = client.Watcher.Execute(request);
+
+
+            Console.WriteLine("hello");
+          
+
+
         }
 
 
