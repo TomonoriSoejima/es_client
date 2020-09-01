@@ -17,7 +17,7 @@ namespace es_client
 
             var client = new ElasticClient(settings);
 
-            watcher_sample2(client);
+            put_watcher_sample(client);
             //Do_it(client);
             BulkAll(client);
             //Task task = AsyncMethod(client);
@@ -72,7 +72,7 @@ namespace es_client
     
         }
 
-        public static void watcher_sample2(ElasticClient client)
+        public static void put_watcher_sample(ElasticClient client)
         {
 
 
@@ -83,6 +83,7 @@ namespace es_client
                 Level = LogLevel.Info
             };
 
+            ConditionContainer cd = new AlwaysCondition();
 
             var my_http = new HttpInputRequest
             {
@@ -99,29 +100,29 @@ namespace es_client
 
 
         
-            var schedule = new HourlySchedule();
+            var hourly = new HourlySchedule();
 
             int[] intNumbers = new int[] { 30 };
-            schedule.Minute = intNumbers;
+            hourly.Minute = intNumbers;
 
-            var schedule1 = new ScheduleContainer
+            var schedule = new ScheduleContainer
             {
-                Hourly = schedule
+                Hourly = hourly
             };
 
-            ConditionContainer cd = new AlwaysCondition();
+        
 
-            var id = "akito";
-            PutWatchRequest watchRequest = new PutWatchRequest(id);
-            watchRequest.Actions = action;
-            watchRequest.Condition = cd;
-            watchRequest.Input = input_container;
-            watchRequest.Trigger = schedule1;
+            var id = "status-check";
+            PutWatchRequest watchRequest = new PutWatchRequest(id)
+            {
+                Actions = action,
+                Condition = cd,
+                Input = input_container,
+                Trigger = schedule
+            };
 
 
             PutWatchResponse response = client.Watcher.Put(watchRequest);
-
-            //ExecuteWatchResponse response = client.Watcher.Execute(request);
 
 
             Console.WriteLine("hello");
