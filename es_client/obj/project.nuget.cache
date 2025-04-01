@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "4Lo6LTie//s=",
+  "success": true,
+  "projectFilePath": "/Users/surfer/elastic/source/es_client/es_client/es_client.csproj",
+  "expectedPackageFiles": [
+    "/Users/surfer/.nuget/packages/elastic.clients.elasticsearch/8.17.3/elastic.clients.elasticsearch.8.17.3.nupkg.sha512",
+    "/Users/surfer/.nuget/packages/elastic.transport/0.5.9/elastic.transport.0.5.9.nupkg.sha512"
+  ],
+  "logs": []
+}
